@@ -1,3 +1,5 @@
-# SiaSimulator
+# SiaSim.dart
 
-A minimal web server using [Shelf](https://pub.dartlang.org/packages/shelf).
+A simulator designed to fake the API for [Sia](https://github.com/NebulousLabs/Sia).
+
+Uses the [Shelf](https://pub.dartlang.org/packages/shelf) web server framework.
