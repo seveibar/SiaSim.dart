@@ -9,6 +9,7 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_route/shelf_route.dart';
 
 import "daemon.dart";
+import "consensus.dart";
 
 void main(List<String> args) {
   var parser = new ArgParser()
@@ -21,18 +22,15 @@ void main(List<String> args) {
     exit(1);
   });
 
-//  var handler = const shelf.Pipeline()
-//      .addMiddleware(shelf.logRequests())
-//      .addHandler(_echoRequest);
-  
   var daemon = new RegularDaemon();
+  var consensus = new RegularConsensus();
   
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
       ..get("/daemon/stop", daemon.Stop)
       ..get("/daemon/update/apply", daemon.ApplyUpdate)
       ..get("/daemon/update/check", daemon.CheckForUpdate)
-      ..get("/consensus/status", (_) => new shelf.Response.ok(""))
+      ..get("/consensus/status", consensus.Status)
       ..get("/gateway/status", (_) => new shelf.Response.ok(""))
       ..get("/gateway/synchronize", (_) => new shelf.Response.ok(""))
       ..get("/gateway/peer/add", (_) => new shelf.Response.ok(""))
