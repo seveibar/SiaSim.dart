@@ -8,14 +8,14 @@ import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_route/shelf_route.dart';
 
-import "daemon.dart";
-import "consensus.dart";
-import "gateway.dart";
-import "host.dart";
-import "transactionpool.dart";
-import "wallet.dart";
-import "miner.dart";
-import "renter.dart";
+import 'modules/daemon.dart';
+import 'modules/consensus.dart';
+import 'modules/gateway.dart';
+import 'modules/host.dart';
+import 'modules/transactionpool.dart';
+import 'modules/wallet.dart';
+import 'modules/miner.dart';
+import 'modules/renter.dart';
 
 void main(List<String> args) {
   
