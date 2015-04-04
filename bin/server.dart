@@ -54,9 +54,9 @@ void main(List<String> args) {
       ..get("/renter/files", (_) => new shelf.Response.ok(""))
       ..get("/renter/upload", (_) => new shelf.Response.ok(""))
       ..get("/transactionpool/transactions", transactionPool.Transactions)
-      ..get("/wallet/address", (_) => new shelf.Response.ok(""))
-      ..get("/wallet/send", (_) => new shelf.Response.ok(""))
-      ..get("/wallet/status", (_) => new shelf.Response.ok(""));
+      ..get("/wallet/address", wallet.Address)
+      ..get("/wallet/send", wallet.Send)
+      ..get("/wallet/status", wallet.Status);
   
   
   io.serve(route.handler, 'localhost', port).then((server) {
