@@ -6,8 +6,13 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'response.dart';
 
 abstract class Wallet{
+  // Returns an address that is spendable by the wallet.
   shelf.Response Address(shelf.Request req);
+  
+  // Sends coins to a destination address.
   shelf.Response Send(shelf.Request req);
+  
+  // Get the status of the wallet.
   shelf.Response Status(shelf.Request req);
 }
 

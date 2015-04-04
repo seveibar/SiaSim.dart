@@ -17,8 +17,17 @@ abstract class Host {
   int numContracts;
   int storageRemaining;
 
+  // The host will announce itself to the network as
+  // a source of storage. Generally only needs to be
+  // called once.
   shelf.Response Announce(shelf.Request req);
+  
+  // Sets the configuration of the host.
   shelf.Response Config(shelf.Request req);
+  
+  // Queries the host for its configuration values,
+  // as well as the amount of storage remaining and
+  // the number of contracts formed.
   shelf.Response Status(shelf.Request req);
 }
 

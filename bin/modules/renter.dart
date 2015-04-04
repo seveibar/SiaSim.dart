@@ -6,9 +6,17 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'response.dart';
 
 abstract class Renter{
+  
+  // Starts a file download
   shelf.Response Download(shelf.Request req);
+  
+  // Lists all files in the download queue
   shelf.Response DownloadQueue(shelf.Request req);
+  
+  // Lists the status of all files
   shelf.Response Files(shelf.Request req);
+  
+  // Upload a file
   shelf.Response Upload(shelf.Request req);
 }
 

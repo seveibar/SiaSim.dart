@@ -7,10 +7,20 @@ import 'response.dart';
 
 abstract class Gateway {
   List<String> peers;
-
+  
+  // Returns information about the gateway, including the
+  // list of peers.
   shelf.Response Status(shelf.Request req);
+  
+  // Will force synchronization of the local node and the
+  // rest of the network. May take a while. Should only
+  // be necessary for debugging.
   shelf.Response Synchronize(shelf.Request req);
+  
+  // Will add a peer to the gateway.
   shelf.Response AddPeer(shelf.Request req);
+  
+  // Will remove a peer from the gateway.
   shelf.Response RemovePeer(shelf.Request req);
 }
 

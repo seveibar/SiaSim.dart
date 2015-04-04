@@ -6,6 +6,8 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'response.dart';
 
 abstract class Consensus{
+  // Returns information about the consensus set, such as the current
+  // block height.
   shelf.Response Status(shelf.Request req);
 }
 

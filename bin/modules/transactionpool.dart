@@ -6,6 +6,8 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'response.dart';
 
 abstract class TransactionPool{
+  // Returns of all of the transactions in the
+  // transactions pool
   shelf.Response Transactions(shelf.Request req);
 }
 

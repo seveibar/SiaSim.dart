@@ -8,8 +8,15 @@ import 'package:shelf/shelf_io.dart' as io;
 import 'response.dart';
 
 abstract class Daemon {
+  // Cleanly shuts down the daemon. May take a while.
   shelf.Response Stop(shelf.Request req);
+  
+  // Applies the update specified by version.
   shelf.Response CheckForUpdate(shelf.Request req);
+  
+  // Checks for an update, returning a bool indicating whether
+  // there is an update and a version indicating the version
+  // of the update.
   shelf.Response ApplyUpdate(shelf.Request req);
 }
 

@@ -9,8 +9,13 @@ abstract class Miner{
   int threads;
   bool running;
   
+  // Tells the miner to begin mining on "threads" threads.
   shelf.Response Start(shelf.Request req);
+  
+  // Returns the status of the miner
   shelf.Response Stop(shelf.Request req);
+  
+  // Stops the miner
   shelf.Response Status(shelf.Request req);
 }
 
