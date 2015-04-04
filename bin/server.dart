@@ -14,6 +14,7 @@ import "gateway.dart";
 import "host.dart";
 import "transactionpool.dart";
 import "wallet.dart";
+import "miner.dart";
 
 void main(List<String> args) {
   var parser = new ArgParser()
@@ -32,6 +33,7 @@ void main(List<String> args) {
   var host = new RegularHost();
   var transactionPool = new RegularTransactionPool();
   var wallet = new RegularWallet();
+  var miner = new RegularMiner();
   
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
@@ -46,9 +48,9 @@ void main(List<String> args) {
       ..get("/host/announce", host.Announce)
       ..get("/host/config", host.Config)
       ..get("/host/status", host.Status)
-      ..get("/miner/start", (_) => new shelf.Response.ok(""))
-      ..get("/miner/status", (_) => new shelf.Response.ok(""))
-      ..get("/miner/stop", (_) => new shelf.Response.ok(""))
+      ..get("/miner/start", miner.Start)
+      ..get("/miner/status", miner.Status)
+      ..get("/miner/stop", miner.Stop)
       ..get("/renter/download", (_) => new shelf.Response.ok(""))
       ..get("/renter/downloadqueue", (_) => new shelf.Response.ok(""))
       ..get("/renter/files", (_) => new shelf.Response.ok(""))
