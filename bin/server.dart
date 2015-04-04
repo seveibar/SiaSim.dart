@@ -11,6 +11,7 @@ import 'package:shelf_route/shelf_route.dart';
 import "daemon.dart";
 import "consensus.dart";
 import "gateway.dart";
+import "host.dart";
 
 void main(List<String> args) {
   var parser = new ArgParser()
@@ -25,7 +26,8 @@ void main(List<String> args) {
 
   var daemon = new RegularDaemon();
   var consensus = new RegularConsensus();
-  var gateway = new Gateway();
+  var gateway = new RegularGateway();
+  var host = new RegularHost();
   
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
@@ -37,9 +39,9 @@ void main(List<String> args) {
       ..get("/gateway/synchronize", gateway.Synchronize)
       ..get("/gateway/peer/add", gateway.AddPeer)
       ..get("/gateway/peer/remove", gateway.RemovePeer)
-      ..get("/host/announce", (_) => new shelf.Response.ok(""))
-      ..get("/host/config", (_) => new shelf.Response.ok(""))
-      ..get("/host/status", (_) => new shelf.Response.ok(""))
+      ..get("/host/announce", host.Announce)
+      ..get("/host/config", host.Config)
+      ..get("/host/status", host.Status)
       ..get("/miner/start", (_) => new shelf.Response.ok(""))
       ..get("/miner/status", (_) => new shelf.Response.ok(""))
       ..get("/miner/stop", (_) => new shelf.Response.ok(""))
