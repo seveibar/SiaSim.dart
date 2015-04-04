@@ -8,6 +8,8 @@ import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_route/shelf_route.dart';
 
+import "daemon.dart";
+
 void main(List<String> args) {
   var parser = new ArgParser()
       ..addOption('port', abbr: 'p', defaultsTo: '8080');
@@ -23,11 +25,13 @@ void main(List<String> args) {
 //      .addMiddleware(shelf.logRequests())
 //      .addHandler(_echoRequest);
   
+  var daemon = new RegularDaemon();
+  
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
-      ..get("/daemon/stop", (_) => new shelf.Response.ok(""))
-      ..get("/daemon/update/apply", (_) => new shelf.Response.ok(""))
-      ..get("/daemon/update/check", (_) => new shelf.Response.ok(""))
+      ..get("/daemon/stop", daemon.Stop)
+      ..get("/daemon/update/apply", daemon.ApplyUpdate)
+      ..get("/daemon/update/check", daemon.CheckForUpdate)
       ..get("/consensus/status", (_) => new shelf.Response.ok(""))
       ..get("/gateway/status", (_) => new shelf.Response.ok(""))
       ..get("/gateway/synchronize", (_) => new shelf.Response.ok(""))
