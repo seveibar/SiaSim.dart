@@ -13,6 +13,7 @@ import "consensus.dart";
 import "gateway.dart";
 import "host.dart";
 import "transactionpool.dart";
+import "wallet.dart";
 
 void main(List<String> args) {
   var parser = new ArgParser()
@@ -30,6 +31,7 @@ void main(List<String> args) {
   var gateway = new RegularGateway();
   var host = new RegularHost();
   var transactionPool = new RegularTransactionPool();
+  var wallet = new RegularWallet();
   
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
