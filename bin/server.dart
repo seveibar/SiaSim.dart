@@ -12,6 +12,7 @@ import "daemon.dart";
 import "consensus.dart";
 import "gateway.dart";
 import "host.dart";
+import "transactionpool.dart";
 
 void main(List<String> args) {
   var parser = new ArgParser()
@@ -28,6 +29,7 @@ void main(List<String> args) {
   var consensus = new RegularConsensus();
   var gateway = new RegularGateway();
   var host = new RegularHost();
+  var transactionPool = new RegularTransactionPool();
   
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
@@ -49,7 +51,7 @@ void main(List<String> args) {
       ..get("/renter/downloadqueue", (_) => new shelf.Response.ok(""))
       ..get("/renter/files", (_) => new shelf.Response.ok(""))
       ..get("/renter/upload", (_) => new shelf.Response.ok(""))
-      ..get("/transactionpool/transactions", (_) => new shelf.Response.ok(""))
+      ..get("/transactionpool/transactions", transactionPool.Transactions)
       ..get("/wallet/address", (_) => new shelf.Response.ok(""))
       ..get("/wallet/send", (_) => new shelf.Response.ok(""))
       ..get("/wallet/status", (_) => new shelf.Response.ok(""));
