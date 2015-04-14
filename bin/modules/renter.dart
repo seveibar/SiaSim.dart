@@ -1,5 +1,7 @@
 library renter;
 
+import 'dart:io';
+import 'dart:async';
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
@@ -45,6 +47,14 @@ class RegularRenter implements Renter{
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
+    print('$source, $nickname');
+    var sourceFile = new File.fromUri(new Uri.file(source));
+    Future<File> copyFuture = sourceFile.copy('../tmp/test.txt');
+    copyFuture.catchError((fail){
+      return new FailResponse();
+    });
+
     return new SuccessResponse();
   }
+  
 }
