@@ -25,9 +25,17 @@ abstract class Renter{
 class RegularRenter implements Renter{
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var destination = req.url.queryParameters["destination"];
+    var source = req.url.queryParameters["source"];
+    print('$source, $nickname');
+    var tempFile = new File.fromUri(new Uri.file('../tmp/test.txt'));
+    Future<File> copyFuture = tempFile.copy(source);
+    copyFuture.catchError((fail){
+      return new FailResponse();
+    });
+    
     return new SuccessResponse();
   }
+  
   shelf.Response DownloadQueue(shelf.Request req){
     /*
     This function returns JSON with the form...
@@ -49,6 +57,7 @@ class RegularRenter implements Renter{
     var source = req.url.queryParameters["source"];
     print('$source, $nickname');
     var sourceFile = new File.fromUri(new Uri.file(source));
+    print('$sourceFile');
     Future<File> copyFuture = sourceFile.copy('../tmp/test.txt');
     copyFuture.catchError((fail){
       return new FailResponse();
@@ -57,4 +66,5 @@ class RegularRenter implements Renter{
     return new SuccessResponse();
   }
   
+
 }
