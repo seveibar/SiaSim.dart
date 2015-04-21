@@ -31,13 +31,13 @@ void main(List<String> args) {
   });
   
   // Initialize the modules for receiving responses
+  var wallet = new RegularWallet();
   var daemon = new RegularDaemon();
   var consensus = new RegularConsensus();
   var gateway = new RegularGateway();
   var host = new RegularHost();
   var transactionPool = new RegularTransactionPool();
-  var wallet = new RegularWallet();
-  var miner = new RegularMiner();
+  var miner = new RegularMiner(wallet);
   var renter = new RegularRenter();
   
   // Route the URLs to response callbacks

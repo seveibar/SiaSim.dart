@@ -17,6 +17,9 @@ abstract class Wallet{
 }
 
 class RegularWallet implements Wallet{
+  static int _Moneys = 0;
+  get Moneys => _Moneys;
+  set Moneys(amt) => _Moneys = amt;
   shelf.Response Address(shelf.Request req){
     return new JSONResponse({
       "Address": "123456789101112131415161718192021222324252627282930313233343536370"
@@ -27,9 +30,9 @@ class RegularWallet implements Wallet{
   }
   shelf.Response Status(shelf.Request req){
     return new JSONResponse({
-       "Balance": 0,
-       "FullBalance": 0,
-       "NumAddresses": 0
+       "Balance": Moneys,
+       "FullBalance": Moneys,
+       "NumAddresses": 1
     });
   }
 }

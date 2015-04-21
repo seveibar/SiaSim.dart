@@ -23,10 +23,16 @@ abstract class Renter{
 }
 
 class RegularRenter implements Renter{
+  
+  bool fileUploadAttempt = false;
+  int timeSince = 0;
+  String fileUploadName = "";
+  
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
     print('$source, $nickname');
+    return new SuccessResponse();
     var tempFile = new File.fromUri(new Uri.file('../tmp/test.txt'));
     Future<File> copyFuture = tempFile.copy(source);
     copyFuture.catchError((fail){
@@ -47,14 +53,40 @@ class RegularRenter implements Renter{
         Nickname    string
     },...]
     */ 
-    return new JSONResponse([]);
+    if (fileUploadAttempt){
+        return new JSONResponse([{
+          "Complete": timeSince * 200 >= 24000,
+          "Available": timeSince * 200 >= 24000,
+          "Filesize": 24000,
+          "Received": timeSince * 200,
+          "Destination": "/home/seve",
+          "Nickname": fileUploadName
+        }]);
+      }else{
+        return new JSONResponse([]);
+      }
   }
   shelf.Response Files(shelf.Request req){
-    return new JSONResponse([]);
+    timeSince ++;
+    if (fileUploadAttempt){
+      return new JSONResponse([{
+        "Complete": timeSince * 20 >= 24000,
+        "Available": timeSince * 20 >= 24000,
+        "Filesize": 24000,
+        "Received": timeSince * 20,
+        "Destination": "/home/seve",
+        "Nickname": fileUploadName
+      }]);
+    }else{
+      return new JSONResponse([]);
+    }
   }
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
+    fileUploadName = nickname;
+    fileUploadAttempt = true;
+    return new SuccessResponse();
     print('$source, $nickname');
     var sourceFile = new File.fromUri(new Uri.file(source));
     print('$sourceFile');

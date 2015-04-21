@@ -20,13 +20,16 @@ abstract class Miner{
 }
 
 class RegularMiner extends Miner{
-  RegularMiner(){
+  var wallet;
+  RegularMiner(thewallet){
+    wallet = thewallet;
     running = false;
     threads = 0;
   }
   shelf.Response Start(shelf.Request req){
+    print("STarting");
     var qthreads = int.parse(req.url.queryParameters["threads"]);
-    running = true;
+    running = threads > 0;
     threads = qthreads;
     return new SuccessResponse();
   }
@@ -36,6 +39,9 @@ class RegularMiner extends Miner{
     return new SuccessResponse();
   }
   shelf.Response Status(shelf.Request req){
+    if (threads > 0){
+      wallet.Moneys += 1000000000000000000000000;
+    }
     return new JSONResponse({
         "Mining": running,
         "State": "", // TODO what are possible states?
