@@ -12,10 +12,10 @@ abstract class Miner{
   // Tells the miner to begin mining on "threads" threads.
   shelf.Response Start(shelf.Request req);
   
-  // Returns the status of the miner
+  // Tells the miner to stop mining
   shelf.Response Stop(shelf.Request req);
   
-  // Stops the miner
+  // Returns the status of the miner
   shelf.Response Status(shelf.Request req);
 }
 
