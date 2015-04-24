@@ -1,7 +1,11 @@
 library renter;
 
+import 'dart:io';
+import 'dart:async';
+import "dart:convert";
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
+import 'package:path/path.dart' as path;
 
 import 'response.dart';
 
@@ -23,9 +27,11 @@ abstract class Renter{
 class RegularRenter implements Renter{
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var destination = req.url.queryParameters["destination"];
+    var destination = req.url.queryParameters["source"];    
+
     return new SuccessResponse();
   }
+  
   shelf.Response DownloadQueue(shelf.Request req){
     /*
     This function returns JSON with the form...
@@ -36,15 +42,51 @@ class RegularRenter implements Renter{
         Destination string
         Nickname    string
     },...]
-    */ 
+    */
+
     return new JSONResponse([]);
   }
   shelf.Response Files(shelf.Request req){
-    return new JSONResponse([]);
+
+    var tmpDir = new Directory('tmp');
+    tmpDir.createSync();
+    
+    List contents = tmpDir.listSync();
+    List<Map> JSONmap = []; 
+    
+    for(var fileOrDir in contents){
+      if (fileOrDir is File) {
+        JSONmap.add({
+          "Available": true,
+          "Nickname": path.basename(fileOrDir.path),
+          "Repairing": false,
+          "TimeRemaining": 9999999999
+        });
+      } else if (fileOrDir is Directory) {
+        continue;
+      }        
+    }
+    
+    return new JSONResponse(JSONmap);
   }
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
+    var sourceFile = new File(source);
+    
+    var tmpDir = new Directory('tmp');
+    tmpDir.createSync();
+    
+    var pathString = 'tmp/' + nickname;
+    try {
+      var copiedFile = sourceFile.copySync(pathString);
+    } catch(exception){
+      print(exception);
+      return new FailResponse();
+    }
+  
     return new SuccessResponse();
   }
+  
+
 }

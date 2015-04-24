@@ -8,6 +8,12 @@ class SuccessResponse extends Response{
   }));
 }
 
+class FailResponse extends Response{
+  FailResponse() : super.ok(JSON.encode({
+    "Success": false
+  }));
+}
+
 class JSONResponse extends Response{
   JSONResponse(Object json) : super.ok(JSON.encode(json));
 }
