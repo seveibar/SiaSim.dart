@@ -5,6 +5,7 @@ import 'dart:async';
 import "dart:convert";
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
+import 'package:path/path.dart' as path;
 
 import 'response.dart';
 
@@ -26,8 +27,8 @@ abstract class Renter{
 class RegularRenter implements Renter{
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var source = req.url.queryParameters["source"];
-    print('$source, $nickname');
+    var destination = req.url.queryParameters["source"];
+    print('$destination, $nickname');
     
 
     return new SuccessResponse();
@@ -53,15 +54,16 @@ class RegularRenter implements Renter{
     tmpDir.createSync();
     
     List contents = tmpDir.listSync();
-    List<String> nicknames; 
+    List<String> nicknames = []; 
+    
     for(var fileOrDir in contents) {
       if (fileOrDir is File) {
-        nicknames.add(fileOrDir.toString());
+        nicknames.add(path.basename(fileOrDir.path));
       } else if (fileOrDir is Directory) {
         continue;
-      }
-        
+      }        
     }
+    
     return new JSONResponse(nicknames);
   }
   shelf.Response Upload(shelf.Request req){
