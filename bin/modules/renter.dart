@@ -28,14 +28,8 @@ class RegularRenter implements Renter{
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
     print('$source, $nickname');
-    var tempFile = new File.fromUri(new Uri.file('../tmp/test.txt'));
     
-    /*
-    Future<File> copyFuture = tempFile.copy(source);
-    copyFuture.catchError((fail){
-      return new FailResponse();
-    });
-    */
+
     return new SuccessResponse();
   }
   
@@ -68,7 +62,6 @@ class RegularRenter implements Renter{
       }
         
     }
-    //var JSONoutput = JSON.encode(nicknames);
     return new JSONResponse(nicknames);
   }
   shelf.Response Upload(shelf.Request req){
@@ -77,7 +70,6 @@ class RegularRenter implements Renter{
     print('$source, $nickname');
     var sourceFile = new File.fromUri(new Uri.file(source));
     print('$sourceFile');
-    //Future<File> copyFuture = sourceFile.copy('../tmp/test.txt');
     
     var tmpDir = new Directory('tmp');
     tmpDir.createSync();
@@ -89,11 +81,7 @@ class RegularRenter implements Renter{
       print(exception);
       return new FailResponse();
     }
-    /*
-    copiedFile.catchError((fail){
-      return new FailResponse();
-    });
-    */    
+  
     return new SuccessResponse();
   }
   
