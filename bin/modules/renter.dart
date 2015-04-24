@@ -2,6 +2,7 @@ library renter;
 
 import 'dart:io';
 import 'dart:async';
+import "dart:convert";
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
@@ -28,11 +29,13 @@ class RegularRenter implements Renter{
     var source = req.url.queryParameters["source"];
     print('$source, $nickname');
     var tempFile = new File.fromUri(new Uri.file('../tmp/test.txt'));
+    
+    /*
     Future<File> copyFuture = tempFile.copy(source);
     copyFuture.catchError((fail){
       return new FailResponse();
     });
-    
+    */
     return new SuccessResponse();
   }
   
@@ -46,11 +49,27 @@ class RegularRenter implements Renter{
         Destination string
         Nickname    string
     },...]
-    */ 
+    */
+
     return new JSONResponse([]);
   }
   shelf.Response Files(shelf.Request req){
-    return new JSONResponse([]);
+
+    var tmpDir = new Directory('tmp');
+    tmpDir.createSync();
+    
+    List contents = tmpDir.listSync();
+    List<String> nicknames; 
+    for(var fileOrDir in contents) {
+      if (fileOrDir is File) {
+        nicknames.add(fileOrDir.toString());
+      } else if (fileOrDir is Directory) {
+        continue;
+      }
+        
+    }
+    //var JSONoutput = JSON.encode(nicknames);
+    return new JSONResponse(nicknames);
   }
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
@@ -58,11 +77,23 @@ class RegularRenter implements Renter{
     print('$source, $nickname');
     var sourceFile = new File.fromUri(new Uri.file(source));
     print('$sourceFile');
-    Future<File> copyFuture = sourceFile.copy('../tmp/test.txt');
-    copyFuture.catchError((fail){
+    //Future<File> copyFuture = sourceFile.copy('../tmp/test.txt');
+    
+    var tmpDir = new Directory('tmp');
+    tmpDir.createSync();
+    
+    var pathString = '../tmp/' + nickname;
+    try {
+      var copiedFile = sourceFile.copySync(pathString);
+    } catch(exception){
+      print(exception);
+      return new FailResponse();
+    }
+    /*
+    copiedFile.catchError((fail){
       return new FailResponse();
     });
-
+    */    
     return new SuccessResponse();
   }
   
