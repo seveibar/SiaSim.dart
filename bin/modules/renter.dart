@@ -52,17 +52,22 @@ class RegularRenter implements Renter{
     tmpDir.createSync();
     
     List contents = tmpDir.listSync();
-    List<String> nicknames = []; 
+    List<Map> JSONmap = []; 
     
-    for(var fileOrDir in contents) {
+    for(var fileOrDir in contents){
       if (fileOrDir is File) {
-        nicknames.add(path.basename(fileOrDir.path));
+        JSONmap.add({
+          "Available": true,
+          "Nickname": path.basename(fileOrDir.path),
+          "Repairing": false,
+          "TimeRemaining": 9999999999
+        });
       } else if (fileOrDir is Directory) {
         continue;
       }        
     }
     
-    return new JSONResponse(nicknames);
+    return new JSONResponse(JSONmap);
   }
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
