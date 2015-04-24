@@ -27,9 +27,7 @@ abstract class Renter{
 class RegularRenter implements Renter{
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var destination = req.url.queryParameters["source"];
-    print('$destination, $nickname');
-    
+    var destination = req.url.queryParameters["source"];    
 
     return new SuccessResponse();
   }
@@ -69,14 +67,12 @@ class RegularRenter implements Renter{
   shelf.Response Upload(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
     var source = req.url.queryParameters["source"];
-    print('$source, $nickname');
-    var sourceFile = new File.fromUri(new Uri.file(source));
-    print('$sourceFile');
+    var sourceFile = new File(source);
     
     var tmpDir = new Directory('tmp');
     tmpDir.createSync();
     
-    var pathString = '../tmp/' + nickname;
+    var pathString = 'tmp/' + nickname;
     try {
       var copiedFile = sourceFile.copySync(pathString);
     } catch(exception){
