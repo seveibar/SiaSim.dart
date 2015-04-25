@@ -23,9 +23,9 @@ abstract class Wallet{
 }
 
 class RegularWallet implements Wallet{
-  //AppState appState;
+  AppState appState;
 
-  RegularWallet(appState) : super(appState);
+  RegularWallet(this.appState);
   shelf.Response Address(shelf.Request req){
     appState.numAddresses++;
     return new JSONResponse({
