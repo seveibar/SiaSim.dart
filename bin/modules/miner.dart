@@ -5,10 +5,13 @@ import 'package:shelf/shelf_io.dart' as io;
 
 import '../appstate.dart';
 import 'response.dart';
+import 'dart:async';
+import 'dart:math';
 
 abstract class Miner{
   int threads;
   bool running;
+  Duration duration;
   AppState appState;
 
   // Constructor that gives relationship to appState
@@ -28,8 +31,13 @@ class RegularMiner extends Miner{
   RegularMiner(appState):super(appState){
     running = false;
     threads = 0;
+    duration = new Duration(milliseconds:500);
+    new Timer.periodic(duration, incrementBalance);
   }
-  
+  incrementBalance(timer) {
+    appState.balance += pow(10, 22) * threads;
+    appState.fullBalance += pow(10, 22) * threads;
+  }
   shelf.Response Start(shelf.Request req){
     var qthreads = int.parse(req.url.queryParameters["threads"]);
     running = true;
