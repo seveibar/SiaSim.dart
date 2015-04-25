@@ -25,12 +25,11 @@ abstract class Miner{
 }
 
 class RegularMiner extends Miner{
-  AppState appState;
-
-  RegularMiner(this.appState){
+  RegularMiner(appState):super(appState){
     running = false;
     threads = 0;
   }
+  
   shelf.Response Start(shelf.Request req){
     var qthreads = int.parse(req.url.queryParameters["threads"]);
     running = true;
