@@ -3,24 +3,31 @@ library miner;
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
+import '../appstate.dart';
 import 'response.dart';
 
 abstract class Miner{
   int threads;
   bool running;
-  
+  AppState appState;
+
+  // Constructor that gives relationship to appState
+  Miner(this.appState);
+
   // Tells the miner to begin mining on "threads" threads.
   shelf.Response Start(shelf.Request req);
-  
+
   // Tells the miner to stop mining
   shelf.Response Stop(shelf.Request req);
-  
+
   // Returns the status of the miner
   shelf.Response Status(shelf.Request req);
 }
 
 class RegularMiner extends Miner{
-  RegularMiner(){
+  AppState appState;
+
+  RegularMiner(this.appState){
     running = false;
     threads = 0;
   }
