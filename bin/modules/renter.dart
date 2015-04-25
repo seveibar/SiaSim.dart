@@ -27,8 +27,21 @@ abstract class Renter{
 class RegularRenter implements Renter{
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var destination = req.url.queryParameters["source"];    
-
+    var destination = req.url.queryParameters["source"];
+    
+    var destinationDir = new Directory(path.dirname(destination));
+    destinationDir.createSync();
+    
+    var pathString = 'tmp/' + nickname;
+    var sourceFile = new File(pathString);
+    
+    try {
+      var copiedFile = sourceFile.copySync(destination);
+    } catch(exception){
+      print(exception);
+      return new FailResponse();
+    }
+    
     return new SuccessResponse();
   }
   
