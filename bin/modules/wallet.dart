@@ -22,10 +22,10 @@ abstract class Wallet{
   shelf.Response Status(shelf.Request req);
 }
 
-class RegularWallet implements Wallet{
-  AppState appState;
+class RegularWallet extends Wallet{
+  //AppState appState;
 
-  RegularWallet(this.appState);
+  RegularWallet(appState):super(appState);
   shelf.Response Address(shelf.Request req){
     appState.numAddresses++;
     return new JSONResponse({
