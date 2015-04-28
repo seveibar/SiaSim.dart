@@ -16,30 +16,33 @@ import 'modules/transactionpool.dart';
 import 'modules/wallet.dart';
 import 'modules/miner.dart';
 import 'modules/renter.dart';
+import 'appstate.dart';
 
 void main(List<String> args) {
-  
+
   // Parse command line arguments
   var parser = new ArgParser()
       ..addOption('port', abbr: 'p', defaultsTo: '9980');
 
   var result = parser.parse(args);
-  
+
   var port = int.parse(result['port'], onError: (val) {
     stdout.writeln('Could not parse port value "$val" into a number.');
     exit(1);
   });
-  
+
+  var appState = new AppState();
+
   // Initialize the modules for receiving responses
   var daemon = new RegularDaemon();
   var consensus = new RegularConsensus();
   var gateway = new RegularGateway();
   var host = new RegularHost();
   var transactionPool = new RegularTransactionPool();
-  var wallet = new RegularWallet();
-  var miner = new RegularMiner();
+  var wallet = new RegularWallet(appState);
+  var miner = new RegularMiner(appState);
   var renter = new RegularRenter();
-  
+
   // Route the URLs to response callbacks
   var route = router()
       ..get("/", (_) => new shelf.Response.ok("SIA SIMULATOR (DART) V0.0.1"))
@@ -65,7 +68,7 @@ void main(List<String> args) {
       ..get("/wallet/address",      wallet.Address)
       ..get("/wallet/send",         wallet.Send)
       ..get("/wallet/status",       wallet.Status);
-  
+
   // Actually start the server
   io.serve(route.handler, 'localhost', port).then((server) {
     print('Serving at http://${server.address.host}:${server.port}');
