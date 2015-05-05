@@ -41,7 +41,7 @@ void main(List<String> args) {
   var transactionPool = new RegularTransactionPool();
   var wallet = new RegularWallet(appState);
   var miner = new RegularMiner(appState);
-  var renter = new RegularRenter();
+  var renter = new RegularRenter(appState);
 
   // Route the URLs to response callbacks
   var route = router()
