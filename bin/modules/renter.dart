@@ -70,6 +70,9 @@ class RegularRenter extends Renter{
     for (var file in downloadQueue){
       if(file.received < file.filesize) {
         file.received += 10000;
+        if (file.received > file.filesize){
+          file.received = file.filesize;
+        }
         newQueue.add(file); 
       }
       else if(file.received >= file.filesize) {
@@ -81,7 +84,7 @@ class RegularRenter extends Renter{
   
   shelf.Response Download(shelf.Request req){
     var nickname = req.url.queryParameters["nickname"];
-    var destination = req.url.queryParameters["source"];
+    var destination = req.url.queryParameters["destination"];
     
     var destinationDir = new Directory(path.dirname(destination));
     destinationDir.createSync();
