@@ -32,7 +32,16 @@ void main(List<String> args) {
   });
 
   var appState = new AppState();
-
+  
+  // Delete any existing tmp directory on server start
+  try{
+    var tmpDir = new Directory('tmp');
+    tmpDir.deleteSync(recursive: true);
+    print('Cleaned tmp directory');
+  } catch(exception){
+    print('No tmp directory to clean');  
+  }
+  
   // Initialize the modules for receiving responses
   var daemon = new RegularDaemon();
   var consensus = new RegularConsensus();
@@ -60,10 +69,11 @@ void main(List<String> args) {
       ..get("/miner/start",         miner.Start)
       ..get("/miner/status",        miner.Status)
       ..get("/miner/stop",          miner.Stop)
-      ..get("/renter/download",     renter.Download)
+      ..get("/renter/files/download", renter.Download)
       ..get("/renter/downloadqueue",renter.DownloadQueue)
-      ..get("/renter/files",        renter.Files)
-      ..get("/renter/upload",       renter.Upload)
+      ..get("/renter/files/list",   renter.FilesList)
+      ..get("/renter/files/upload", renter.Upload)
+      ..get("/renter/files/delete", renter.Delete)
       ..get("/transactionpool/transactions", transactionPool.Transactions)
       ..get("/wallet/address",      wallet.Address)
       ..get("/wallet/send",         wallet.Send)

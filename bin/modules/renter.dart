@@ -11,29 +11,30 @@ import '../appstate.dart';
 import 'response.dart';
 
 class UploadedFile{
-  UploadedFile(String nickname, int filesize){
-    this.nickname = nickname;
-    this.filesize = filesize;
-  }
   
   int filesize;
   int remaining = 99999999;
   String nickname;
   bool available = true;
   bool repairing = false;
+  
+  UploadedFile(String nickname, int filesize){
+    this.nickname = nickname;
+    this.filesize = filesize;
+  }
 }
 
 class DownloadingFile extends UploadedFile{
+  
+  bool complete = false;
+  String destination;
+  int received = 0; // out of total size
   
   DownloadingFile(String nickname, int filesize, this.destination):
     super(nickname, filesize);
   
   DownloadingFile.fromUploadedFile(UploadedFile file, this.destination):
     super(file.nickname, file.filesize);
-
-  bool complete = false;
-  String destination;
-  int received = 0; // out of total size
 }
 
 abstract class Renter{
@@ -51,10 +52,13 @@ abstract class Renter{
   shelf.Response DownloadQueue(shelf.Request req);
   
   // Lists the status of all files
-  shelf.Response Files(shelf.Request req);
+  shelf.Response FilesList(shelf.Request req);
   
   // Upload a file
   shelf.Response Upload(shelf.Request req);
+  
+  //Deletes a renter file entry
+  shelf.Response Delete(shelf.Request req);
   
   // Called to update the DownloadQueue
   void updateDownloadQueue(timer);
@@ -138,7 +142,7 @@ class RegularRenter extends Renter{
 
     return new JSONResponse(JSONmap);
   }
-  shelf.Response Files(shelf.Request req){
+  shelf.Response FilesList(shelf.Request req){
 
     var tmpDir = new Directory('tmp');
     tmpDir.createSync();
@@ -178,5 +182,17 @@ class RegularRenter extends Renter{
     return new SuccessResponse();
   }
   
+  shelf.Response Delete(shelf.Request req){
+    var nickname = req.url.queryParameters["nickname"];
+    List newUploadList = new List<UploadedFile>();
+    for(var file in uploadedFiles){
+      if (file.nickname != nickname){
+        newUploadList.add(file);
+      }
+    }
+    uploadedFiles = newUploadList;
+    
+    return new SuccessResponse();
+  }
 
 }
