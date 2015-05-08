@@ -57,8 +57,11 @@ abstract class Renter{
   // Upload a file
   shelf.Response Upload(shelf.Request req);
   
-  //Deletes a renter file entry
+  // Deletes a renter file entry
   shelf.Response Delete(shelf.Request req);
+  
+  //
+  shelf.Response Rename(shelf.Request req);
   
   // Called to update the DownloadQueue
   void updateDownloadQueue(timer);
@@ -192,6 +195,18 @@ class RegularRenter extends Renter{
     }
     uploadedFiles = newUploadList;
     
+    return new SuccessResponse();
+  }
+  
+  shelf.Response Rename(shelf.Request req){
+    var nickname = req.url.queryParameters["nickname"];
+    var newname = req.url.queryParameters["newname"];
+    for(var file in uploadedFiles){
+      if (file.nickname == nickname){
+        file.nickname = newname;
+        break;
+      }
+    }
     return new SuccessResponse();
   }
 

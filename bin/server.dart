@@ -74,6 +74,7 @@ void main(List<String> args) {
       ..get("/renter/files/list",   renter.FilesList)
       ..get("/renter/files/upload", renter.Upload)
       ..get("/renter/files/delete", renter.Delete)
+      ..get("/renter/files/rename", renter.Rename)
       ..get("/transactionpool/transactions", transactionPool.Transactions)
       ..get("/wallet/address",      wallet.Address)
       ..get("/wallet/send",         wallet.Send)
